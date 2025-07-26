@@ -84,6 +84,21 @@ public class Scanner {
                     while (peek() != '\n' && !isAtEnd()) {
                         advance();
                     }
+                } else if (match('*')){
+                    while (!(peek() == '*' && peekNext() == '/') &&!isAtEnd()) {
+                        if(peek() == '\n') {
+                            line++;
+                        }
+                        advance();
+                    }
+                    if (isAtEnd()) {
+                        Lox.error(line, "Unterminated multi-line comment.");
+                        return;
+                    }
+                    advance();
+                    advance();
+
+
                 } else {
                     addToken(SLASH);
                 }
@@ -175,16 +190,19 @@ public class Scanner {
         while (peek() != '"' && !isAtEnd()) {
             if (peek() == '\n') {
                 line++;
-                advance();
             }
-
-            if (isAtEnd()) {
-                Lox.error(line, "Unterminated string");
-            }
+            advance();
         }
 
+        if (isAtEnd()) {
+            Lox.error(line, "Unterminated string.");
+            return;
+        }
+
+        // Closing ".
         advance();
 
+        // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
         addToken(STRING, value);
     }
@@ -224,6 +242,6 @@ public class Scanner {
     }
 
     private boolean isAtEnd() {
-        return current >= tokens.size();
+        return current >= source.length();
     }
 }
