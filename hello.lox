@@ -1,0 +1,17 @@
+// Definim o funcție care calculează pătratul unui număr
+fun patrat(x) {
+  return x * x;
+}
+
+// Declarăm o variabilă
+var numar = 7;
+
+// Afișăm pătratul
+print "Pătratul lui " + numar + " este " + patrat(numar);
+
+// Buclă care afișează pătratul numerelor de la 1 la 5
+var i = 1;
+while (i <= 5) {
+  print "i = " + i + ", i^2 = " + patrat(i);
+  i = i + 1;
+}
