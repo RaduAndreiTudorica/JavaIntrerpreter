@@ -1,23 +1,66 @@
-# Lox - Java Interpreter (In Progress)
 
-This is a basic interpreter for the **Lox programming language**, written in Java. It follows the design and implementation described in the book *Crafting Interpreters* by Robert Nystrom.
+# 🦎 Lox Interpreter – Java Implementation
+
+This is a basic interpreter for the **Lox programming language**, implemented in Java.  
+It closely follows the structure and design from the book *Crafting Interpreters* by Robert Nystrom.
+
+---
 
 ## ✅ Features Implemented
 
-So far, the project includes:
+| Component         | Description                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| `Lox.java`       | Main entry point. Runs `.lox` scripts or launches an interactive REPL.      |
+| `Scanner.java`   | Converts raw source code into a list of **tokens** (lexical analysis).      |
+| `TokenType.java` | Enum of all token types used in Lox (keywords, operators, etc.).            |
+| `Token.java`     | Representation of a token (type, lexeme, literal, line).                    |
+| `Expr.java`      | Abstract syntax tree (AST) class hierarchy for expressions.                 |
+| `AstPrinter.java`| A **visitor** that prints the AST in fully parenthesized form.              |
+| `GenerateAst.java`| Tool to auto-generate `Expr` subclasses using the AST grammar definition.  |
 
-- ✅ A **main driver** (`Lox.java`) that can run `.lox` scripts or start an interactive prompt (REPL).
-- ✅ A **scanner (lexer)** (`Scanner.java`) that converts source code into a list of tokens.
-- ✅ A complete enumeration of **token types** (`TokenType.java`).
-- ✅ A `Token` class representing each token with type, lexeme, literal value, and line number.
+---
 
-## 🔍 How It Works
+## 🧠 How It Works
 
-- If you run the program with a `.lox` file, it reads and scans the file.
-- If you run the program without arguments, it launches a REPL (interactive mode) in the console.
+- **Lexical Analysis**: The scanner (`Scanner.java`) transforms raw source into a list of tokens.
+- **Parsing**: `Expr.java` represents expressions, and the visitor pattern is used for traversal.
+- **AST Printing**: `AstPrinter` prints the parsed expressions using a parenthesized prefix notation.
+- **REPL Mode**: If no `.lox` script is passed, it enters an interactive mode for testing.
 
-### Example usage:
+---
+
+## 💻 Example Usage
+
+### Compile
 
 ```bash
-# Run a Lox script
-java lox.Lox path/to/script.lox
+javac -d out src/lox/*.java src/tool/*.java
+```
+
+### Run REPL
+
+```bash
+java -cp out lox.Lox
+```
+
+### Run a Lox script
+
+```bash
+java -cp out lox.Lox path/to/script.lox
+```
+
+---
+
+## 🛠 In Progress
+
+- [ ] Parser (`Parser.java`) – builds an AST from token sequence.
+- [ ] Runtime evaluator (interpreter).
+- [ ] Statements (`Stmt`) and control flow (`if`, `while`, `print`, etc.).
+- [ ] Environment for variables and scoping.
+- [ ] Error reporting and recovery.
+
+---
+
+## 📚 Based On
+
+**Crafting Interpreters** by [Robert Nystrom](https://craftinginterpreters.com/) – an excellent book on building programming languages.
