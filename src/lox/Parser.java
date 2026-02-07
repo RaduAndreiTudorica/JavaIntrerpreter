@@ -24,7 +24,19 @@ public class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return comma();
+    }
+
+    private Expr comma() {
+        Expr expr = equality();
+
+        while (match(COMMA)) {
+            Token operator = previous();
+            Expr right = equality();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
     }
 
     private Expr equality() {
@@ -64,7 +76,7 @@ public class Parser {
     private Expr factor() {
         Expr expr = unary();
 
-        while (match(SLASH, STAR)) {
+        while (match(SLASH, STAR, PERCENT)) {
             Token operator = previous();
             Expr right = unary();
             expr = new Expr.Binary(expr, operator, right);
@@ -74,7 +86,7 @@ public class Parser {
     }
 
     private Expr unary() {
-        if (match(BANG, MINUS)) {
+        if (match(BANG, MINUS, MINUS_MINUS, PLUS_PLUS)) {
             Token operator = previous();
             Expr right = unary();
             return new Expr.Unary(operator, right);
@@ -90,7 +102,7 @@ public class Parser {
 
         if (match(LEFT_PAREN)) {
             Expr expr = expression();
-            consume(RIGHT_PAREN, "Expect ')' after expression");
+            consume();
             return new Expr.Grouping(expr);
         }
 
@@ -107,10 +119,10 @@ public class Parser {
         return false;
     }
 
-    private Token consume (TokenType type, String message) {
-        if (check(type)) return advance();
+    private Token consume () {
+        if (check(TokenType.RIGHT_PAREN)) return advance();
 
-        throw error(peek(), message);
+        throw error(peek(), "Expect ')' after expression");
     }
 
     private boolean check(TokenType type) {

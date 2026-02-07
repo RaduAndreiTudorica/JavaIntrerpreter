@@ -1,9 +1,9 @@
 package lox;
 
 public enum TokenType {
-    //Single-scharacter tokens.
+    //Single-character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
+    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR, PERCENT,
 
     //one or two character tokens
 
@@ -11,6 +11,7 @@ public enum TokenType {
     EQUAL, EQUAL_EQUAL,
     GREATER, GREATER_EQUAL,
     LESS, LESS_EQUAL,
+    PLUS_PLUS, MINUS_MINUS,
 
     //Literals
     IDENTIFIER, STRING, NUMBER,

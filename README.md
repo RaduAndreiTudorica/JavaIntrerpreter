@@ -1,66 +1,64 @@
+# jlox - Java Lox Interpreter
 
-# 🦎 Lox Interpreter – Java Implementation
+![Java](https://img.shields.io/badge/Language-Java-orange)
+![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+![Chapter](https://img.shields.io/badge/Chapter-7%3A%20Evaluating%20Expressions-blue)
 
-This is a basic interpreter for the **Lox programming language**, implemented in Java.  
-It closely follows the structure and design from the book *Crafting Interpreters* by Robert Nystrom.
-
----
-
-## ✅ Features Implemented
-
-| Component         | Description                                                                 |
-|------------------|-----------------------------------------------------------------------------|
-| `Lox.java`       | Main entry point. Runs `.lox` scripts or launches an interactive REPL.      |
-| `Scanner.java`   | Converts raw source code into a list of **tokens** (lexical analysis).      |
-| `TokenType.java` | Enum of all token types used in Lox (keywords, operators, etc.).            |
-| `Token.java`     | Representation of a token (type, lexeme, literal, line).                    |
-| `Expr.java`      | Abstract syntax tree (AST) class hierarchy for expressions.                 |
-| `AstPrinter.java`| A **visitor** that prints the AST in fully parenthesized form.              |
-| `GenerateAst.java`| Tool to auto-generate `Expr` subclasses using the AST grammar definition.  |
+A tree-walk interpreter for the **Lox** programming language, built in Java following the book *[Crafting Interpreters](https://craftinginterpreters.com/)* by Robert Nystrom.
 
 ---
 
-## 🧠 How It Works
+## 🚀 Current Progress
+**Chapter 7: Evaluating Expressions**
+The interpreter can now parse and evaluate arithmetic and logical expressions.
 
-- **Lexical Analysis**: The scanner (`Scanner.java`) transforms raw source into a list of tokens.
-- **Parsing**: `Expr.java` represents expressions, and the visitor pattern is used for traversal.
-- **AST Printing**: `AstPrinter` prints the parsed expressions using a parenthesized prefix notation.
-- **REPL Mode**: If no `.lox` script is passed, it enters an interactive mode for testing.
+## 🛠️ Architecture
 
----
+The project follows a classic interpreter pipeline:
 
-## 💻 Example Usage
+1.  **Scanner (`Scanner.java`)**
+    *   Converts raw source code into a stream of `Token`s.
+    *   Handles keywords, literals, and operators.
 
-### Compile
+2.  **Parser (`Parser.java`)**
+    *   **Recursive Descent Parser** that constructs an Abstract Syntax Tree (AST).
+    *   Handles operator precedence and error synchronization.
 
-```bash
-javac -d out src/lox/*.java src/tool/*.java
+3.  **AST (`Expr.java`)**
+    *   Represents the code structure.
+    *   Uses the **Visitor Pattern** for operations like printing (`AstPrinter`) and evaluation (`Interpreter`).
+
+4.  **Interpreter (`Interpreter.java`)**
+    *   Traverses the AST recursively to execute code.
+    *   Handles dynamic typing, truthiness, and arithmetic.
+
+## 📂 Project Structure
+
+```text
+src/lox/
+├── Lox.java          # Entry point (REPL & Script runner)
+├── Scanner.java      # Lexical Analysis
+├── Token.java        # Token definition
+├── TokenType.java    # Enum of token types
+├── Parser.java       # Syntax Analysis
+├── Expr.java         # AST Node definitions
+├── Interpreter.java  # Evaluation logic
+└── AstPrinter.java   # Debug utility to print AST
 ```
 
-### Run REPL
+## 💻 Usage
 
+### Run a script
 ```bash
-java -cp out lox.Lox
+java lox.Lox script.lox
 ```
 
-### Run a Lox script
-
+### Interactive REPL
 ```bash
-java -cp out lox.Lox path/to/script.lox
+java lox.Lox
+> 1 + 2 * 3
+7
 ```
 
 ---
-
-## 🛠 In Progress
-
-- [ ] Parser (`Parser.java`) – builds an AST from token sequence.
-- [ ] Runtime evaluator (interpreter).
-- [ ] Statements (`Stmt`) and control flow (`if`, `while`, `print`, etc.).
-- [ ] Environment for variables and scoping.
-- [ ] Error reporting and recovery.
-
----
-
-## 📚 Based On
-
-**Crafting Interpreters** by [Robert Nystrom](https://craftinginterpreters.com/) – an excellent book on building programming languages.
+*Built with ❤️ while learning compiler design.*

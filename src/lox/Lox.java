@@ -20,6 +20,7 @@ public class Lox {
         } else {
             runPrompt();
         }
+
     }
 
     private static void runFile(String fileName) throws IOException {
@@ -59,6 +60,10 @@ public class Lox {
         System.out.println(new AstPrinter().print(expression));
     }
 
+    static void error(int line, String message) {
+        report(line, "", message);
+    }
+
     static void error(Token token, String message) {
         if (token.type == TokenType.EOF) {
             report(token.line, " at end", message);
@@ -68,7 +73,7 @@ public class Lox {
     }
 
     private static void report(int line, String where, String message) {
-        System.err.println("[line" + line +"] Error" + where + ": " + message);
+        System.err.println("[line " + line +"] Error" + where + ": " + message);
         hadError = true;
     }
 }
