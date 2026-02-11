@@ -20,7 +20,6 @@ public class Lox {
         } else {
             runPrompt();
         }
-
     }
 
     private static void runFile(String fileName) throws IOException {
