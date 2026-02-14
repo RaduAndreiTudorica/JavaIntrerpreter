@@ -1,4 +1,4 @@
-# jlox - Java Lox Interpreter
+# Jlox - Java Lox Interpreter
 
 ![Java](https://img.shields.io/badge/Language-Java-orange)
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)

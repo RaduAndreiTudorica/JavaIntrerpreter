@@ -120,8 +120,8 @@ List deleteNode(List list, int position) {
         return list;
     }
 
-   if (current == list->head) {
-       list->head = current->next;
+    if (current == list->head) {
+        list->head = current->next;
        if (list->head != NULL) {
            list->head->prev = NULL;
        }
