@@ -2,7 +2,7 @@ package lox;
 
 public class AstPrinter implements Expr.Visitor<String> {
     public static void main(String[] args) {
-        Expr expression = new Expr.Binary (
+        Expr expression = new Expr.Binary(
                 new Expr.Unary(
                         new Token(TokenType.MINUS, "-", null, 1),
                         new Expr.Literal(123)),
@@ -15,6 +15,11 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     String print(Expr expr) {
         return expr.accept(this);
+    }
+
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return "";
     }
 
     @Override
@@ -39,6 +44,11 @@ public class AstPrinter implements Expr.Visitor<String> {
     @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return paranthesize(expr.operator.lexeme, expr.right);
+    }
+
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return "";
     }
 
     private String paranthesize(String name, Expr... exprs) {

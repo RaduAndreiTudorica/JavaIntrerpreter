@@ -1,15 +1,15 @@
 package lox;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static lox.TokenType.*;
 
 public class Scanner {
     private final String source;
-    private final List<Token> tokens =  new ArrayList<>();
+    private final List<Token> tokens = new ArrayList<>();
     private int start = 0;
     private int current = 0;
     private int line = 1;
@@ -19,21 +19,21 @@ public class Scanner {
     static {
         keywords = new HashMap<>();
         keywords.put("and", AND);
-        keywords.put("class",  CLASS);
-        keywords.put("else",   ELSE);
-        keywords.put("false",  FALSE);
-        keywords.put("for",    FOR);
-        keywords.put("fun",    FUN);
-        keywords.put("if",     IF);
-        keywords.put("nil",    NIL);
-        keywords.put("or",     OR);
-        keywords.put("print",  PRINT);
+        keywords.put("class", CLASS);
+        keywords.put("else", ELSE);
+        keywords.put("false", FALSE);
+        keywords.put("for", FOR);
+        keywords.put("fun", FUN);
+        keywords.put("if", IF);
+        keywords.put("nil", NIL);
+        keywords.put("or", OR);
+        keywords.put("print", PRINT);
         keywords.put("return", RETURN);
-        keywords.put("super",  SUPER);
-        keywords.put("this",   THIS);
-        keywords.put("true",   TRUE);
-        keywords.put("var",    VAR);
-        keywords.put("while",  WHILE);
+        keywords.put("super", SUPER);
+        keywords.put("this", THIS);
+        keywords.put("true", TRUE);
+        keywords.put("var", VAR);
+        keywords.put("while", WHILE);
     }
 
     Scanner(String source) {
@@ -41,7 +41,7 @@ public class Scanner {
     }
 
     List<Token> scanTokens() {
-        while(!isAtEnd()) {
+        while (!isAtEnd()) {
             start = current;
             scanToken();
         }
@@ -54,17 +54,39 @@ public class Scanner {
         char c = advance();
 
         switch (c) {
-            case '(': addToken(LEFT_PAREN); break;
-            case ')': addToken(RIGHT_PAREN); break;
-            case '{': addToken(LEFT_BRACE); break;
-            case '}': addToken(RIGHT_BRACE); break;
-            case ',': addToken(COMMA); break;
-            case '.': addToken(DOT); break;
-            case '-': addToken(match('-') ? MINUS_MINUS : MINUS); break;
-            case '+': addToken(match('+') ? PLUS_PLUS : PLUS); break;
-            case ';': addToken(SEMICOLON); break;
-            case '*': addToken(STAR); break;
-            case '%': addToken(PERCENT); break;
+            case '(':
+                addToken(LEFT_PAREN);
+                break;
+            case ')':
+                addToken(RIGHT_PAREN);
+                break;
+            case '{':
+                addToken(LEFT_BRACE);
+                break;
+            case '}':
+                addToken(RIGHT_BRACE);
+                break;
+            case ',':
+                addToken(COMMA);
+                break;
+            case '.':
+                addToken(DOT);
+                break;
+            case '-':
+                addToken(match('-') ? MINUS_MINUS : MINUS);
+                break;
+            case '+':
+                addToken(match('+') ? PLUS_PLUS : PLUS);
+                break;
+            case ';':
+                addToken(SEMICOLON);
+                break;
+            case '*':
+                addToken(STAR);
+                break;
+            case '%':
+                addToken(PERCENT);
+                break;
 
             case '!':
                 addToken(match('=') ? BANG_EQUAL : BANG);
@@ -85,9 +107,9 @@ public class Scanner {
                     while (peek() != '\n' && !isAtEnd()) {
                         advance();
                     }
-                } else if (match('*')){
-                    while (!(peek() == '*' && peekNext() == '/') &&!isAtEnd()) {
-                        if(peek() == '\n') {
+                } else if (match('*')) {
+                    while (!(peek() == '*' && peekNext() == '/') && !isAtEnd()) {
+                        if (peek() == '\n') {
                             line++;
                         }
                         advance();
@@ -98,8 +120,6 @@ public class Scanner {
                     }
                     advance();
                     advance();
-
-
                 } else {
                     addToken(SLASH);
                 }
@@ -114,7 +134,9 @@ public class Scanner {
                 line++;
                 break;
 
-            case '"': string(); break; 
+            case '"':
+                string();
+                break;
 
             case 'o':
                 if (match('r')) {
@@ -143,7 +165,7 @@ public class Scanner {
         TokenType type = keywords.get(text);
 
         if (type == null) {
-            type =IDENTIFIER;
+            type = IDENTIFIER;
         }
 
         addToken(type);
@@ -168,7 +190,7 @@ public class Scanner {
             advance();
         }
 
-        if(peek() == '.' && isDigit(peekNext())) {
+        if (peek() == '.' && isDigit(peekNext())) {
             advance();
         }
 
@@ -221,7 +243,7 @@ public class Scanner {
             return false;
         }
 
-        if (source.charAt(current) != expected ) {
+        if (source.charAt(current) != expected) {
             return false;
         }
 
