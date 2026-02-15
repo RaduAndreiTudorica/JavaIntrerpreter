@@ -8,11 +8,11 @@ A tree-walk interpreter for the **Lox** programming language, built in Java foll
 
 ---
 
-## 🚀 Current Progress
+## Current Progress
 **Chapter 8: Statements and State**
 The interpreter can now parse and execute statements, including variable declarations, assignments, and block scopes.
 
-## 🛠️ Architecture
+## Architecture
 
 The project follows a classic interpreter pipeline:
 
@@ -36,7 +36,7 @@ The project follows a classic interpreter pipeline:
     *   Manages variable scopes and bindings.
     *   Supports nested environments for block scopes.
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 src/lox/
@@ -52,7 +52,7 @@ src/lox/
 └── AstPrinter.java   # Debug utility to print AST
 ```
 
-## 💻 Usage
+## Usage
 
 ### Run a script
 ```bash
@@ -69,4 +69,3 @@ java lox.Lox
 ```
 
 ---
-*Built with ❤️ while learning compiler design.*
