@@ -2,15 +2,15 @@
 
 ![Java](https://img.shields.io/badge/Language-Java-orange)
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
-![Chapter](https://img.shields.io/badge/Chapter-7%3A%20Evaluating%20Expressions-blue)
+![Chapter](https://img.shields.io/badge/Chapter-8%3A%20Statements%20and%20State-blue)
 
 A tree-walk interpreter for the **Lox** programming language, built in Java following the book *[Crafting Interpreters](https://craftinginterpreters.com/)* by Robert Nystrom.
 
 ---
 
 ## 🚀 Current Progress
-**Chapter 7: Evaluating Expressions**
-The interpreter can now parse and evaluate arithmetic and logical expressions.
+**Chapter 8: Statements and State**
+The interpreter can now parse and execute statements, including variable declarations, assignments, and block scopes.
 
 ## 🛠️ Architecture
 
@@ -22,15 +22,19 @@ The project follows a classic interpreter pipeline:
 
 2.  **Parser (`Parser.java`)**
     *   **Recursive Descent Parser** that constructs an Abstract Syntax Tree (AST).
-    *   Handles operator precedence and error synchronization.
+    *   Handles operator precedence, error synchronization, and statement parsing.
 
-3.  **AST (`Expr.java`)**
-    *   Represents the code structure.
+3.  **AST (`Expr.java`, `Stmt.java`)**
+    *   Represents the code structure (expressions and statements).
     *   Uses the **Visitor Pattern** for operations like printing (`AstPrinter`) and evaluation (`Interpreter`).
 
 4.  **Interpreter (`Interpreter.java`)**
     *   Traverses the AST recursively to execute code.
-    *   Handles dynamic typing, truthiness, and arithmetic.
+    *   Handles dynamic typing, truthiness, arithmetic, and state management.
+
+5.  **Environment (`Environment.java`)**
+    *   Manages variable scopes and bindings.
+    *   Supports nested environments for block scopes.
 
 ## 📂 Project Structure
 
@@ -41,8 +45,10 @@ src/lox/
 ├── Token.java        # Token definition
 ├── TokenType.java    # Enum of token types
 ├── Parser.java       # Syntax Analysis
-├── Expr.java         # AST Node definitions
+├── Expr.java         # AST Expression Node definitions
+├── Stmt.java         # AST Statement Node definitions
 ├── Interpreter.java  # Evaluation logic
+├── Environment.java  # Variable scope management
 └── AstPrinter.java   # Debug utility to print AST
 ```
 
@@ -56,8 +62,10 @@ java lox.Lox script.lox
 ### Interactive REPL
 ```bash
 java lox.Lox
-> 1 + 2 * 3
-7
+> var a = 1;
+> var b = 2;
+> print a + b;
+3
 ```
 
 ---
