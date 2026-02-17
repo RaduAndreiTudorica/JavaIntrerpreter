@@ -1,32 +1,8 @@
-// 1. Verificare Matematică și Operatori Binari
-print (5 + 10) * 2 / 3; // Așteptat: 10
-print 0.5 > 0.1;        // Așteptat: true (verifică Double.compare)
+var a = 0;
+var temp;
 
-// 2. Verificare String-uri (Provocările Capitolului 7)
-print "Lox " + "is " + "cool";      // Așteptat: Lox is cool
-print "Rezultat: " + (10 + 5);      // Concatenare mixtă: Rezultat: 15
-print "mere" < "pere";              // Comparare lexicografică: true
-
-// 3. Verificare Egalitate (Efort minim de eroare)
-print 10 == "10";       // Așteptat: false (isEqual nu aruncă eroare)
-print nil == nil;       // Așteptat: true
-
-// 4. Declarații și Atribuiri de Variabile
-var a = 1;
-var b = 2;
-a = a + b + 3;          // Verifică assignment() și precedența
-print a;                // Așteptat: 6
-
-// 5. Verificare Blocuri și Scoping (Capitolul 8.5)
-var scope = "global";
-{
-  var scope = "local";
-  print scope;          // Așteptat: local
-  
-  var interior = "secret";
-  print scope + " " + interior; // Așteptat: local secret
+for (var b = 1; a < 10000; b = temp + b) {
+  print a;
+  temp = a;
+  a = b;
 }
-print scope;            // Așteptat: global (variabila locală a dispărut)
-
-// 6. Test de eroare (Ar trebui să oprească execuția dacă e activat)
-// print 5 / 0;         // Ar trebui să dea RuntimeError: Division by zero.
