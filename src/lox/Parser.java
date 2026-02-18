@@ -1,5 +1,7 @@
 package lox;
 
+import lox.Stmt;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,8 @@ public class Parser {
         if (match(IF)) return ifStatement();
         if (match(PRINT)) return printStatement();
         if (match(WHILE)) return whileStatement();
+        if (match(BREAK)) return breakStatement();
+        if (match(CONTINUE)) return continueStatement();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
@@ -92,6 +96,18 @@ public class Parser {
         }
 
         return body;
+    }
+
+    private Stmt breakStatement() {
+        Token keyword = previous();
+        consume(SEMICOLON, "Expect ';' after 'break'.");
+        return new Stmt.Break(keyword);
+    }
+
+    private Stmt continueStatement() {
+        Token keyword = previous();
+        consume(SEMICOLON, "Expect ';' after 'continue'.");
+        return new Stmt.Continue(keyword);
     }
 
     private Stmt whileStatement() {

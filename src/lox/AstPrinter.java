@@ -1,5 +1,7 @@
 package lox;
 
+import lox.parsing.Expr;
+
 public class AstPrinter implements Expr.Visitor<String> {
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(

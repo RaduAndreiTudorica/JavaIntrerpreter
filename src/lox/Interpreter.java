@@ -1,5 +1,8 @@
 package lox;
 
+import lox.Expr;
+import lox.Stmt;
+
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>,
@@ -82,9 +85,13 @@ class Interpreter implements Expr.Visitor<Object>,
 
     @Override
     public Void visitWhileStmt(Stmt.While stmt) {
-        while (isTruthy(evaluate(stmt.condition))) {
-            execute(stmt.body);
-        }
+        try {
+            while (isTruthy(evaluate(stmt.condition))) {
+                try {
+                    execute(stmt.body);
+                } catch (ContinueException e) {}
+            }
+        } catch (BreakException e) {}
 
         return null;
     }
@@ -102,6 +109,17 @@ class Interpreter implements Expr.Visitor<Object>,
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
+
+    @Override
+    public Void visitBreakStmt(Stmt.Break stmt) {
+        throw new BreakException();
+    }
+
+    @Override
+    public Void visitContinueStmt(Stmt.Continue stmt) {
+        throw new ContinueException();
+    }
+
 
     @Override
     public Void visitPrintStmt(Stmt.Print stmt) {
