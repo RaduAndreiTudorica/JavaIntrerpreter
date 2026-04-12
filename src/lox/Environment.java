@@ -6,7 +6,7 @@ import java.util.Map;
 public class Environment {
     final Environment enclosing;
     private final Map<String, Object> values = new HashMap<>();
-    private static final Object UNINITIALIZED = new Object();
+    public static final Object UNINITIALIZED = new Object();
     
     Environment() {
         enclosing = null;
@@ -32,7 +32,7 @@ public class Environment {
     }
 
     void define(String name, Object value) {
-        values.put(name, value == null ? UNINITIALIZED : value);
+        values.put(name, value);
     }
     
     void assign(Token name, Object value) {

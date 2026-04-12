@@ -16,6 +16,7 @@ public class GenerateAst {
         defineAst(outputDir, "Expr", Arrays.asList(
                 "Assign   : Token name, Expr value",
                 "Binary   : Expr left, Token operator, Expr right",
+                "Call     : Expr callee, Token paren, List<Expr> arguments",
                 "Grouping : Expr expression",
                 "Logical  : Expr left, Token operator, Expr right",
                 "Literal  : Object value",
@@ -26,9 +27,12 @@ public class GenerateAst {
         defineAst(outputDir, "Stmt", Arrays.asList(
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
+                "Function   : Token name, List<Token> params," +
+                        " List<Stmt> body",
                 "If         : Expr condition, Stmt thenBranch" +
-                            ", Stmt elseBranch",
+                        ", Stmt elseBranch",
                 "Print      : Expr expression",
+                "Return     : Token keyword, Expr value",
                 "Var        : Token name, Expr initializer",
                 "While      : Expr condition, Stmt body",
                 "Break      : Token keyword",
@@ -54,7 +58,7 @@ public class GenerateAst {
         for (String type : types) {
             String className = type.split(":")[0].trim();
             String fields = type.split(":")[1].trim();
-            defineType(writer, baseName, className,fields);
+            defineType(writer, baseName, className, fields);
         }
 
         // The base accept() method

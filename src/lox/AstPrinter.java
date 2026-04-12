@@ -1,7 +1,5 @@
 package lox;
 
-import lox.parsing.Expr;
-
 public class AstPrinter implements Expr.Visitor<String> {
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(
@@ -28,6 +26,11 @@ public class AstPrinter implements Expr.Visitor<String> {
     public String visitBinaryExpr(Expr.Binary expr) {
         return paranthesize(expr.operator.lexeme,
                 expr.left, expr.right);
+    }
+
+    @Override
+    public String visitCallExpr(Expr.Call expr) {
+        return "";
     }
 
     @Override
