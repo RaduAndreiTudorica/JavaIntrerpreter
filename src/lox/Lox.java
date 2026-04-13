@@ -1,7 +1,5 @@
 package lox;
 
-import lox.Stmt;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +13,7 @@ public class Lox {
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
 
-    public static void main(String[] args) throws IOException {
+    static void main(String[] args) throws IOException {
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
             System.exit(64);
@@ -58,8 +56,8 @@ public class Lox {
 
         if (hadError) return;
 
-        if (isRepl && statements.size() == 1 && statements.get(0) instanceof Stmt.Expression) {
-            INTERPRETER.interpretExpression((Stmt.Expression) statements.get(0));
+        if (isRepl && statements.size() == 1 && statements.getFirst() instanceof Stmt.Expression) {
+            INTERPRETER.interpretExpression((Stmt.Expression) statements.getFirst());
         } else {
             INTERPRETER.interpret(statements);
         }

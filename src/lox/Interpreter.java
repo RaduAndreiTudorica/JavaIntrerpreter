@@ -4,7 +4,6 @@ import lox.Expr;
 import lox.Stmt;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>,
@@ -144,7 +143,6 @@ class Interpreter implements Expr.Visitor<Object>,
         throw new ContinueException();
     }
 
-
     @Override
     public Void visitPrintStmt(Stmt.Print stmt) {
         Object value = evaluate(stmt.expression);
@@ -152,6 +150,7 @@ class Interpreter implements Expr.Visitor<Object>,
         return null;
     }
 
+    @Override
     public Void visitReturnStmt(Stmt.Return stmt) {
         Object value = null;
         if (stmt.value != null) {
@@ -191,6 +190,11 @@ class Interpreter implements Expr.Visitor<Object>,
         environment.define(stmt.name.lexeme, function);
 
         return null;
+    }
+
+    @Override
+    public Object visitLambdaExpr(Expr.Lambda expr) {
+        return new LoxFunction("<lambda>", expr.params, expr.body, environment);
     }
 
     @Override
@@ -268,7 +272,7 @@ class Interpreter implements Expr.Visitor<Object>,
             throw new RuntimeError(expr.paren,
                     "Can only call functions and classes.");
         }
-        
+
         LoxCallable function = (LoxCallable) callee;
 
         if (arguments.size() != function.arity()) {

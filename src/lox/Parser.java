@@ -34,7 +34,10 @@ public class Parser {
 
     private Stmt declaration() {
         try {
-            if (match(FUN)) return function("function");
+            if (match(FUN)) {
+                if (match(LEFT_PAREN)) return new Stmt.Expression(lambda());
+                return function("function");
+            }
             if (match(VAR)) return varDeclaration();
 
             return statement();
@@ -190,10 +193,29 @@ public class Parser {
         }
 
         consume(RIGHT_PAREN, "Expect ')' after parameters.");
-        
+
         consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
         List<Stmt> body = block();
         return new Stmt.Function(name, parameters, body);
+    }
+
+    private Expr lambda() {
+        List<Token> parameters = new ArrayList<>();
+        if (!check(RIGHT_PAREN)) {
+            do {
+                if (parameters.size() >= 255) {
+                    error(peek(), "Can't have more than 255 parameters.");
+                }
+
+                parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+            } while (match(COMMA));
+        }
+
+        consume(RIGHT_PAREN, "Expect ')' after parameters.");
+        consume(LEFT_BRACE, "Expect '{' before lambda body.");
+
+        List<Stmt> body = block();
+        return new Expr.Lambda(parameters, body);
     }
 
     private List<Stmt> block() {
@@ -350,6 +372,12 @@ public class Parser {
             return new Expr.Grouping(expr);
         }
 
+        if (check(FUN) && peekNext().type == LEFT_PAREN) {
+            match(FUN);
+            match(LEFT_PAREN);
+            return lambda();
+        }
+
         throw error(peek(), "Expect expression.");
     }
 
@@ -404,6 +432,10 @@ public class Parser {
 
     private Token peek() {
         return tokens.get(current);
+    }
+
+    private Token peekNext() {
+        return tokens.get(current + 1);
     }
 
     private Token previous() {
