@@ -17,7 +17,7 @@ The interpreter now includes a semantic analysis pass (Resolver) that resolves v
 - Variables, scopes, and block environments
 - Control flow: `if`, `while`, `for`, `break`, `continue`
 - Functions, closures, and recursion
-- Lambda expressions (with and without braces)
+- Lambda expressions
 - **Resolver** for static variable resolution and closure correctness
 - **Unused variable detection** (reports error for unused local variables)
 - **Index-based environment lookup** for faster variable access
