@@ -9,7 +9,6 @@ public class AstPrinter implements Expr.Visitor<String> {
                 new Token(TokenType.STAR, "*", null, 1),
                 new Expr.Grouping(
                         new Expr.Literal(45.67)));
-
         System.out.println(new AstPrinter().print(expression));
     }
 
@@ -19,18 +18,23 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitAssignExpr(Expr.Assign expr) {
-        return "";
+        return paranthesize("= " + expr.name.lexeme, expr.value);
     }
 
     @Override
     public String visitBinaryExpr(Expr.Binary expr) {
-        return paranthesize(expr.operator.lexeme,
-                expr.left, expr.right);
+        return paranthesize(expr.operator.lexeme, expr.left, expr.right);
     }
 
     @Override
     public String visitCallExpr(Expr.Call expr) {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("(call ").append(print(expr.callee));
+        for (Expr arg : expr.arguments) {
+            sb.append(" ").append(print(arg));
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
     @Override
@@ -40,19 +44,24 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitLogicalExpr(Expr.Logical expr) {
-        return "";
+        return paranthesize(expr.operator.lexeme, expr.left, expr.right);
     }
 
     @Override
     public String visitLambdaExpr(Expr.Lambda expr) {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append("(lambda (");
+        for (int i = 0; i < expr.params.size(); i++) {
+            if (i > 0) sb.append(", ");
+            sb.append(expr.params.get(i).lexeme);
+        }
+        sb.append(") ...)");
+        return sb.toString();
     }
 
     @Override
     public String visitLiteralExpr(Expr.Literal expr) {
-        if (expr.value == null) {
-            return "nil";
-        }
+        if (expr.value == null) return "nil";
         return expr.value.toString();
     }
 
@@ -63,18 +72,16 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitVariableExpr(Expr.Variable expr) {
-        return "";
+        return expr.name.lexeme;
     }
 
     private String paranthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
-
         builder.append("(").append(name);
         for (Expr expr : exprs) {
             builder.append(" ");
             builder.append(expr.accept(this));
         }
-
         builder.append(")");
         return builder.toString();
     }
