@@ -206,16 +206,20 @@ public class Parser {
                 if (parameters.size() >= 255) {
                     error(peek(), "Can't have more than 255 parameters.");
                 }
-
                 parameters.add(consume(IDENTIFIER, "Expect parameter name."));
             } while (match(COMMA));
         }
 
         consume(RIGHT_PAREN, "Expect ')' after parameters.");
-        consume(LEFT_BRACE, "Expect '{' before lambda body.");
 
-        List<Stmt> body = block();
-        return new Expr.Lambda(parameters, body);
+        if (match(LEFT_BRACE)) {
+            List<Stmt> body = block();
+            return new Expr.Lambda(parameters, body);
+        } else {
+            Expr value = expression();
+            List<Stmt> body = List.of(new Stmt.Return(previous(), value));
+            return new Expr.Lambda(parameters, body);
+        }
     }
 
     private List<Stmt> block() {

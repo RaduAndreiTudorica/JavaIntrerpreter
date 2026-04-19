@@ -56,6 +56,11 @@ public class Lox {
 
         if (hadError) return;
 
+        Resolver resolver = new Resolver(INTERPRETER);
+        resolver.resolve(statements);
+
+        if (hadError) return;
+
         if (isRepl && statements.size() == 1 && statements.getFirst() instanceof Stmt.Expression) {
             INTERPRETER.interpretExpression((Stmt.Expression) statements.getFirst());
         } else {
@@ -81,7 +86,8 @@ public class Lox {
     }
 
     static void runtimeError(RuntimeError error) {
-        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+        String location = error.token != null ? "\n[line " + error.token.line + "]" : "";
+        System.err.println(error.getMessage() + location);
         hadRuntimeError = true;
     }
 }

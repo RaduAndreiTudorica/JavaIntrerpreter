@@ -1,10 +1,49 @@
-var a = "global";
-{
-  fun showA() {
-    print a;
-  }
+// test variabile locale si globale
+var global = "global";
 
-  showA();
-  var a = "block";
-  showA();
+{
+  var local = "local";
+  print local;    // local
+  print global;   // global
 }
+
+// test functii si closures
+fun makeCounter() {
+  var count = 0;
+  fun increment() {
+    count = count + 1;
+    return count;
+  }
+  return increment;
+}
+
+var counter = makeCounter();
+print counter();  // 1
+print counter();  // 2
+print counter();  // 3
+
+// test recursivitate
+fun fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+print fibonacci(10);  // 55
+
+// test lambda
+var double = fun(x) x * 2;
+print double(5);  // 10
+
+// test loop cu break si continue
+var i = 0;
+while (i < 10) {
+  i = i + 1;
+  if (i == 3) continue;
+  if (i == 6) break;
+  print i;  // 1, 2, 4, 5
+}
+
+// test variabila nefolosita (ar trebui sa dea warning/eroare)
+// {
+//  var unused = "never used";
+// }
